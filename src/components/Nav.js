@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Nav.css";
 import Search from "./Search";
+import ModalSlider from "./ModalSlider";
 
 function Nav() {
   const [show, handleShow] = useState(false);
