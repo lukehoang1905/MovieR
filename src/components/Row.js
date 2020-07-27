@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import "./Row.css";
 import YouTube from "react-youtube";
-// import
+import movieTrailer from "movie-trailer";
 const base_url = "https://image.tmdb.org/t/p/original/";
 // /movie/{movie_id}/reviews
 
@@ -30,7 +30,18 @@ function Row({ title, fetchUrl, isLarge }) {
       autoplay: 1,
     },
   };
-
+  const handleClick = (aMovie) => {
+    if (trailerUrl) {
+      setTrailerUrl("");
+    } else {
+      movieTrailer(aMovie?.name || "")
+        .then((url) => {
+          const urlParams = new URLSearchParams(new URL(url).search);
+          setTrailerUrl(urlParams.get("v"));
+        })
+        .catch((error) => console.log(error));
+    }
+  };
   //   console.log(movies);
   return (
     <div className="row">
@@ -39,7 +50,7 @@ function Row({ title, fetchUrl, isLarge }) {
         {movies.map((aMovie) => (
           <img
             key={aMovie.id}
-            // onClick={}
+            onClick={() => handleClick(aMovie)}
             className={`movie-container ${isLarge && "row-movieLarge"}`}
             src={`${base_url}${
               isLarge ? aMovie.poster_path : aMovie.backdrop_path
